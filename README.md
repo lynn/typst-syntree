@@ -10,8 +10,10 @@ Here's an example to get started:
 #import "@preview/syntree:0.0.1": syntree
 
 #syntree(
-  nonterminal: (fill: blue),
-  terminal: (style: "italic"),
+  nonterminal: (font: "Linux Biolinum"),
+  terminal: (fill: blue),
+  child-spacing: 3em,
+  layer-spacing: 2em,
   "[S [NP This] [VP [V is] [^NP a wug]]]"
 )
 ```
