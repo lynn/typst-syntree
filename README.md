@@ -16,7 +16,9 @@ Here's an example to get started:
 )
 ```
 
-Or for more flexible tree-drawing:
+There's limited support for formulas inside nodes; try `#syntree("[DP$zws_i$ this]")` or `#syntree("[C $diameter$]")`.
+
+For more flexible tree-drawing:
 
 ```typ
 #import "@preview/syntree:0.0.1": tree

@@ -3,5 +3,5 @@
 #syntree(
   nonterminal: (fill: blue),
   terminal: (style: "italic"),
-  "[NP [Det an] [N example]]"
+  "[S [NP This] [VP [V is] [^NP a wug]]]"
 )

@@ -32,33 +32,35 @@
 }
 
 #let syntree(code, terminal: (:), nonterminal: (:), child-spacing: 1em, layer-spacing: 2.3em) = {
-  let ct(x) = {
-    while x.has("child") { x = x.child }
-    x.text
-  }
-
   let stack = ((),)
-  for token in code.matches(regex("\\[|\\]|[^\\[\\]\\s]+")) {
+  let roof_stack = (false,)
+  for token in code.matches(regex(`(\\\[|\\\]|[^\[\]\s])+|\[|\]`.text)) {
     if token.text == "[" {
       stack.push(())
+      roof_stack.push(false)
     } else if token.text == "]" {
       let (tag, ..children) = stack.pop()
-      let roof = false
-      if ct(tag).starts-with("^") {
-        tag = text(..nonterminal, ct(tag).slice(1))
-        children = (text(..terminal, children.map(ct).join(" ")),)
-        roof = true
+      let roof = roof_stack.pop()
+      if roof {
+        children = (text(..terminal, children.join([ ])),)
       }
       stack.last().push(tree(tag, ..children, child-spacing: child-spacing, layer-spacing: layer-spacing, roof: roof))
     } else {
       let sty = if stack.last().len() == 0 { nonterminal } else { terminal }
-      stack.last().push(text(..sty, token.text))
+      let t = token.text
+      if t.starts-with("^") {
+        t = t.slice(1)
+        roof_stack.last() = true
+      }
+      stack.last().push(text(..sty, eval("[" + t + "]")))
     }
   }
   stack.last().last()
 }
 
-// #tree("S", tree("NP")[$sqrt(pi)$], tree("VP", tree("V")[is], tree("A")[irrational]))
+// #syntree(
+//   "[IP [^DP$zws_i$ they] [I$'$ [I \\[pres\\]] [VP [DP$zws_i$ $t$] [V$'$ [V wonder] [CP [^DP$zws_k$ which wildebeest] [C' [C $diameter$] [IP [^DP$zws_j$ the lions] [I$'$ [I will] [VP // [DP$zws_j$ $t$] [V' [V devour] [DP$zws_k$ $t$]]]]]]]]]]]"
+// )
 //
 // #figure(
 //   caption: "Example of a syntaax tree.",
