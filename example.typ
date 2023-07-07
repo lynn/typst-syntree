@@ -1,4 +1,4 @@
-#import "@local/syntree:0.0.1": syntree
+#import "@local/syntree:0.1.0": syntree
 
 #figure(
   caption: "Example of a syntax tree.",

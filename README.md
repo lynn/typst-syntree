@@ -9,7 +9,7 @@ The name and syntax are inspired by Miles Shang's [syntree](https://github.com/m
 <td>
 
 ```typ
-#import "@preview/syntree:0.0.1": syntree
+#import "@preview/syntree:0.1.0": syntree
 
 #syntree(
   nonterminal: (font: "Linux Biolinum"),
@@ -39,7 +39,7 @@ For more flexible tree-drawing, use `tree`:
 <td>
 
 ```typ
-#import "@preview/syntree:0.0.1": tree
+#import "@preview/syntree:0.1.0": tree
 
 #let bx(col) = box(fill: col, width: 1em, height: 1em)
 #tree("colors",

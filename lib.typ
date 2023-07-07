@@ -57,17 +57,3 @@
   }
   stack.last().last()
 }
-
-// #syntree(
-//   "[IP [^DP$zws_i$ they] [I$'$ [I \\[pres\\]] [VP [DP$zws_i$ $t$] [V$'$ [V wonder] [CP [^DP$zws_k$ which wildebeest] [C' [C $diameter$] [IP [^DP$zws_j$ the lions] [I$'$ [I will] [VP // [DP$zws_j$ $t$] [V' [V devour] [DP$zws_k$ $t$]]]]]]]]]]]"
-// )
-//
-// #figure(
-//   caption: "Example of a syntaax tree.",
-//   gap: 2em,
-//   syntree(
-//     nonterminal: (fill: blue),
-//     terminal: (style: "italic"),
-//     "[S [NP [Det the] [Nom [Adj little] [N bear]]] [VP [VP [V saw] [NP [Det the] [Nom [Adj fine] [Adj fat] [N trout]]]] [PP [P in] [^NP the brook]]]]"
-//   )
-// )
