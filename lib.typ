@@ -18,9 +18,9 @@
       let hi = -layer-spacing + 0.3em
       let lo = -0.3em
       if roof {
-        place(polygon(stroke: stroke, (0pt, hi), (children_width - x0, lo), (-x0, lo)))
+        place(polygon(stroke: stroke, (0pt + child_width/2, hi), (children_width - x0 + child_width/2, lo), (-x0+ child_width/2, lo)))
       } else {
-        place(line(stroke: stroke, start: (0pt, lo), end: (children_width / 2 - x0, hi)))
+        place(line(stroke: stroke, start: (0pt+ child_width/2, lo), end: (children_width / 2 - x0+ child_width/2, hi)))
       }
       child
     })
