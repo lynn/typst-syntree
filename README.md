@@ -9,7 +9,7 @@ The name and syntax are inspired by Miles Shang's [syntree](https://github.com/m
 <td>
 
 ```typ
-#import "@preview/syntree:0.1.0": syntree
+#import "@preview/syntree:0.2.0": syntree
 
 #syntree(
   nonterminal: (font: "Linux Biolinum"),
@@ -19,7 +19,7 @@ The name and syntax are inspired by Miles Shang's [syntree](https://github.com/m
   "[S [NP This] [VP [V is] [^NP a wug]]]"
 )
 ```
-    
+
 </td>
 <td>
 
@@ -39,7 +39,7 @@ For more flexible tree-drawing, use `tree`:
 <td>
 
 ```typ
-#import "@preview/syntree:0.1.0": tree
+#import "@preview/syntree:0.2.0": tree
 
 #let bx(col) = box(fill: col, width: 1em, height: 1em)
 #tree("colors",
@@ -49,7 +49,7 @@ For more flexible tree-drawing, use `tree`:
 
 </td>
 <td>
-  
+
 ![Output tree of colors](https://github.com/lynn/typst-syntree/assets/16232127/bc979614-e2ce-4616-97d1-1584788fc71f)
 
 </td>
