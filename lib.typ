@@ -1,7 +1,7 @@
 #let tree(tag, ..children, child-spacing: 1em, layer-spacing: 2.3em, roof: false, stroke: 0.75pt) = {
   let tag_text = text(tag)
-  style(sty => {
-    let child_widths = children.pos().map(c => measure(c, sty).width)
+  context {
+    let child_widths = children.pos().map(c => measure(c).width)
     let child_xs = ()
     let acc = 0pt
     for width in child_widths {
@@ -13,7 +13,7 @@
 
     let child_nodes = children.pos().enumerate().map(t => {
       let (i, child) = t
-      let child_width = measure(child, sty).width
+      let child_width = measure(child).width
       let x0 = child_xs.at(i) + child_width / 2
       let hi = -layer-spacing + 0.3em
       let lo = -0.3em
@@ -28,7 +28,7 @@
     let child_stack = stack(dir: ltr, spacing: child-spacing, ..child_nodes)
     let layer_stack = stack(dir: ttb, spacing: layer-spacing, tag_text, child_stack)
     block(align(center, layer_stack))
-  })
+  }
 }
 
 #let syntree(code, terminal: (:), nonterminal: (:), child-spacing: 1em, layer-spacing: 2.3em) = {
