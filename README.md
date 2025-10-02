@@ -5,8 +5,6 @@
 # Installation
 Add `#import "@preview/syntree:0.2.1: syntree` somewhere in the preamble. This will add both the latest version of the package, and import the `syntree` function from the library.
 
-❗❗ If you have issues compiling any of the examples below, type `typst fonts` into your terminal and pick a font you have available on your system. This library doesn't install any external fonts; it just provides the tools to generate syntax trees ❗❗
-
 # Usage
 The name and syntax are inspired by Miles Shang's [syntree](https://github.com/mshang/syntree). Here's an example to get started:
 
@@ -18,7 +16,7 @@ The name and syntax are inspired by Miles Shang's [syntree](https://github.com/m
 #import "@preview/syntree:0.2.1": syntree
 
 #syntree(
-  nonterminal: (font: "FreeMono"), // <- a font i have available on my system
+  nonterminal: (style: "italic"),
   terminal: (fill: blue),
   child-spacing: 3em, // default: 1em
   layer-spacing: 2em, // default: 2.3em
