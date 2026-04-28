@@ -31,29 +31,86 @@
   }
 }
 
-#let syntree(code, terminal: (:), nonterminal: (:), child-spacing: 1em, layer-spacing: 2.3em) = {
-  let stack = ((),)
-  let roof-stack = (false,)
-  for token in code.matches(regex(`(\\\[|\\\]|[^\[\]\s])+|\[|\]`.text)) {
-    if token.text == "[" {
-      stack.push(())
-      roof-stack.push(false)
-    } else if token.text == "]" {
-      let (tag, ..children) = stack.pop()
-      let roof = roof-stack.pop()
-      if roof {
-        children = (text(..terminal, children.join([ ])),)
-      }
-      stack.last().push(tree(tag, ..children, child-spacing: child-spacing, layer-spacing: layer-spacing, roof: roof))
+#let syntree(
+  /// Text styles to apply to terminal nodes of the syntax tree (nodes with no children).
+  terminal: (:),
+  /// Text styles to apply to nonterminal nodes of the syntax tree (nodes with children).
+  nonterminal: (:),
+  /// How much horizontal space to have between nodes.
+  child-spacing: 1em,
+  /// How much vertical space to have between nodes.
+  layer-spacing: 2.3em,
+it) = {
+  let tree = tree.with(child-spacing: child-spacing, layer-spacing: layer-spacing)
+
+  // Don't error out on an empty body.
+  if it in ([], [ ], parbreak()) {
+    return none
+  }
+  assert(it.has("children"), message: "must be provided a tree")
+
+  /// The stack is a stack of nodes of form (head: content, children: content, roof: bool).
+  /// The first node on the stack doesn't need a tag or a roof, though.
+  let stack = ((children: ()),)
+  for token in it.children {
+
+    // Ignore any extraneous whitespace.
+    if token in ([], [ ], parbreak()) {
+      continue
+    }
+
+    if token.at("text", default: false) == "[" {
+      // If the current token is `[`, we're entering a new subtree.
+      // Push a new, empty node to the stack.
+      stack.push((head: none, children: (), roof: false))
+    } else if token.at("text", default: false) == "]" {
+      // If the current token is `]`, we're exiting a subtree.
+      // Pop the last node from the stack, and render it into a child tree.
+      assert(stack.len() > 0, message: "extra closing `]`")
+      let (head, children, roof) = stack.pop()
+      stack.last().children.push(tree(head, ..children, roof: roof))
     } else {
-      let sty = if stack.last().len() == 0 { nonterminal } else { terminal }
-      let t = token.text
-      if t.starts-with("^") {
-        t = t.slice(1)
-        roof-stack.last() = true
+      // Otherwise, we need to check if we're at the head of the current subtree.
+      // If so, we'll need to check for a roof marker.
+      let (head, children, roof) = stack.last()
+      if token.has("text") {
+        if head == none and children == () and roof == false {
+          // Check if the tag starts with the roof marker.
+          let splits = token.text.split(" ")
+          let (tag, body) = (splits.first(), splits.slice(1).join(" "))
+          if tag.starts-with("^") {
+            stack.last().roof = true
+            // Guard against setting the tag to an empty string.
+            // This can occur when there could be complex content following, ex. [^$N P$ a wug].
+            if tag == "^" {
+              tag = none
+            } else {
+              tag = tag.slice(1)
+            }
+          }
+          stack.last().head = tag
+          if body != none {
+            stack.last().children = (body,)
+          }
+        } else {
+          // If the previous token wasn't an empty node, this is a child of the current subtree.
+          stack.last().children.push(token)
+        }
+      } else if head == none and children == () {
+        // Otherwise, the current token isn't plain text, so it can't be a roof marker.
+        // Check if the previous token was `[` or `^`, i.e., this is the tag of the current subtree
+        stack.last().head = token
+      } else {
+        // Otherwise, this is a child of the current subtree
+        stack.last().children.push(token)
       }
-      stack.last().push(text(..sty, eval("[" + t + "]")))
     }
   }
-  stack.last().last()
+
+  assert(stack.len() == 1, message: "extra opening `[`")
+
+  // Render all trees in a syntree block.
+  for root in stack.last().children {
+    root
+  }
 }
