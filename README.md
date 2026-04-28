@@ -20,20 +20,21 @@ The name and syntax are inspired by Miles Shang's [syntree](https://github.com/m
   terminal: (fill: blue),
   child-spacing: 3em, // default: 1em
   layer-spacing: 2em, // default: 2.3em
-  "[S [NP This] [VP [V is] [^NP a wug]]]"
-)
+)[
+  [S [NP This] [VP [V is] [^NP a wug]]]
+]
 ```
 
 </td>
 <td>
 
-![Output tree for "This is a wug"](https://github.com/lynn/typst-syntree/assets/16232127/d0c680b2-4fd0-420f-b350-9e9c96ac37f3)
+![Output tree for "This is a wug"](examples/simple.svg)
 
 </td>
 </tr>
 </table>
 
-There's limited support for formulas inside nodes; try `#syntree("[DP$zws_i$ this]")` or `#syntree("[C $diameter$]")`.
+There's full support for formulas inside nodes; for example, `#syntree[[DP$zws_i$ this]]` or `#syntree[[C $diameter$]]`.
 
 For more flexible tree-drawing, use `tree`:
 
@@ -53,7 +54,7 @@ For more flexible tree-drawing, use `tree`:
 </td>
 <td>
 
-![Output tree of colors](https://github.com/lynn/typst-syntree/assets/16232127/bc979614-e2ce-4616-97d1-1584788fc71f)
+![Output tree of colors](examples/tree.svg)
 
 </td>
 </tr>
