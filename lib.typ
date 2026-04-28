@@ -105,3 +105,56 @@ it) = {
     root
   }
 }
+
+#let listtree(
+  /// Text styles to apply to terminal nodes of the syntax tree (nodes with no children).
+  terminal: (:),
+  /// Text styles to apply to nonterminal nodes of the syntax tree (nodes with children).
+  nonterminal: (:),
+  /// How much horizontal space to have between nodes.
+  child-spacing: 1em,
+  /// How much vertical space to have between nodes.
+  layer-spacing: 2.3em,
+it) = {
+  let tree = tree.with(child-spacing: child-spacing, layer-spacing: layer-spacing)
+  let whitespace = ([], [ ], parbreak())
+
+  // Providing a default lets us support calls like `#listtree[- S]`.
+  // Not that this is common, exactly...
+  let roots = it.at("children", default: (content,)).filter(x => x not in whitespace)
+
+  let build-tree(item) = {
+    // Check whether the current item is a list item block.
+    if type(item) == std.content and item.func() == std.list.item {
+      let (head, children) = (none, ())
+      // Typst's item blocks are a little irregular at an AST level.
+      // So we have to check for children explictly.
+      if item.body.has("children") {
+        if item.body.children.len() > 1 {
+          head = item.body.children.first()
+          children = item.body.children.slice(1).filter(x => x not in whitespace)
+        }
+      } else {
+        head = item.body
+      }
+
+      // Check for a roof ^ at the start of a line.
+      let roof = false
+      if head.has("text") and head.text.starts-with("^") {
+        roof = true
+        head = head.text.slice(1)
+      }
+
+      tree(head, ..children.map(build-tree), roof: roof)
+    } else {
+      // Otherwise, return the content directly with no changes.
+      // This allows for composition with `#tree` and `#syntree`.
+      item
+    }
+  }
+
+  // Render all trees in a listtree block.
+  for root in roots {
+    build-tree(root)
+  }
+}
