@@ -118,33 +118,61 @@ it) = {
 it) = {
   let tree = tree.with(child-spacing: child-spacing, layer-spacing: layer-spacing)
   let whitespace = ([], [ ], parbreak())
+  let is-list-item(item) = type(item) == std.content and item.func() == std.list.item
 
   // Providing a default lets us support calls like `#listtree[- S]`.
   // Not that this is common, exactly...
   let roots = it.at("children", default: (content,)).filter(x => x not in whitespace)
 
+  // Splits a list into two sublists, where the first contains up to (but not including)
+  // the first element that returns `false` when `pred` is called, and the second is the remainder.
+  let splitf(lst, pred) = {
+    let (first, rest) = ((), ())
+    let flag = false
+    for item in lst {
+      if not flag and pred(item) {
+        flag = true
+      }
+      if not flag {
+        first.push(item)
+      } else {
+        rest.push(item)
+      }
+    }
+    (first, rest)
+  }
+
   let build-tree(item) = {
     // Check whether the current item is a list item block.
-    if type(item) == std.content and item.func() == std.list.item {
-      let (head, children) = (none, ())
+    if is-list-item(item) {
+      let head = item.body
+      let children = ()
+
       // Typst's item blocks are a little irregular at an AST level.
       // So we have to check for children explictly.
-      if item.body.has("children") {
-        if item.body.children.len() > 1 {
-          head = item.body.children.first()
-          children = item.body.children.slice(1).filter(x => x not in whitespace)
-        }
-      } else {
-        head = item.body
+      if item.body.has("children") and item.body.children.len() > 1 {
+        // All children up to the first std.list.item block should be considered part of the head.
+        let (first, rest) = splitf(item.body.children, is-list-item)
+        head = first.join()
+        children = rest.filter(x => x not in whitespace)
       }
 
       // Check for a roof ^ at the start of a line.
       let roof = false
       if head.has("text") and head.text.starts-with("^") {
+        // A head can be a single content block, in which case we must inspect it directly.
         roof = true
         head = head.text.slice(1)
+      } else if head.has("children") and head.children.len() > 1 {
+        // A head can also be a sequence of content blocks, in which case we must inspect the first node.
+        let first = head.children.first()
+        if first.has("text") and first.text.starts-with("^") {
+          roof = true
+          head = first.text.slice(1) + head.children.slice(1).join()
+        }
       }
 
+      // We apply the terminal (no children) and nonterminal (has children) styling to heads here.
       if children.len() == 0 {
         head = [#set text(..terminal); #head]
       } else {
