@@ -145,11 +145,16 @@ it) = {
         head = head.text.slice(1)
       }
 
+      if children.len() == 0 {
+        head = [#set text(..terminal); #head]
+      } else {
+        head = [#set text(..nonterminal); #head]
+      }
       tree(head, ..children.map(build-tree), roof: roof)
     } else {
       // Otherwise, return the content directly with no changes.
       // This allows for composition with `#tree` and `#syntree`.
-      item
+      [#set text(..terminal); #item]
     }
   }
 
