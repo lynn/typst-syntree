@@ -41,10 +41,12 @@
   /// How much vertical space to have between nodes.
   layer-spacing: 2.3em,
 it) = {
+  let style-text(styles, x) = [#set text(..styles); #x]
   let tree = tree.with(child-spacing: child-spacing, layer-spacing: layer-spacing)
+  let whitespace = ([], [ ], parbreak())
 
   // Don't error out on an empty body.
-  if it in ([], [ ], parbreak()) {
+  if it in whitespace {
     return none
   }
   assert(it.has("children"), message: "must be provided a tree")
@@ -52,13 +54,7 @@ it) = {
   /// The stack is a stack of nodes of form (head: content, children: content, roof: bool).
   /// The first node on the stack doesn't need a tag or a roof, though.
   let stack = ((children: ()),)
-  for token in it.children {
-
-    // Ignore any extraneous whitespace.
-    if token in ([], [ ], parbreak()) {
-      continue
-    }
-
+  for token in it.children.filter(x => x not in whitespace) {
     if token.at("text", default: false) == "[" {
       // If the current token is `[`, we're entering a new subtree.
       // Push a new, empty node to the stack.
@@ -68,47 +64,42 @@ it) = {
       // Pop the last node from the stack, and render it into a child tree.
       assert(stack.len() > 0, message: "extra closing `]`")
       let (head, children, roof) = stack.pop()
-      stack.last().children.push(tree(head, ..children, roof: roof))
+      // Any node head is a nonterminal, so we style them here.
+      let subtree = tree(style-text(nonterminal, head), ..children, roof: roof)
+      stack.last().children.push(subtree)
     } else {
       // Otherwise, we need to check if we're at the head of the current subtree.
       // If so, we'll need to check for a roof marker.
       let (head, children, roof) = stack.last()
-      if token.has("text") {
-        if head == none and children == () and roof == false {
-          // Check if the tag starts with the roof marker.
-          let splits = token.text.split(" ")
-          let (tag, body) = (splits.first(), splits.slice(1).join(" "))
-          if tag.starts-with("^") {
-            stack.last().roof = true
-            // Guard against setting the tag to an empty string.
-            // This can occur when there could be complex content following, ex. [^$N P$ a wug].
-            if tag == "^" {
-              tag = none
-            } else {
-              tag = tag.slice(1)
-            }
+      if token.has("text") and head == none and children == () and roof == false {
+        // Check if the tag starts with the roof marker.
+        let splits = token.text.split(" ")
+        let (tag, body) = (splits.first(), splits.slice(1).join(" "))
+        if tag.starts-with("^") {
+          stack.last().roof = true
+          // Guard against setting the tag to an empty string.
+          // This can occur when there could be complex content following, ex. [^$N P$ a wug].
+          if tag == "^" {
+            tag = none
+          } else {
+            tag = tag.slice(1)
           }
-          stack.last().head = tag
-          if body != none {
-            stack.last().children = (body,)
-          }
-        } else {
-          // If the previous token wasn't an empty node, this is a child of the current subtree.
-          stack.last().children.push(token)
         }
-      } else if head == none and children == () {
-        // Otherwise, the current token isn't plain text, so it can't be a roof marker.
+        stack.last().head = tag
+        if body != none {
+          stack.last().children = (style-text(terminal, body),)
+        }
+      } else if not token.has("text") and head == none and children == () {
+        // If the current token isn't plain text, so it can't be a roof marker.
         // Check if the previous token was `[` or `^`, i.e., this is the tag of the current subtree
         stack.last().head = token
       } else {
         // Otherwise, this is a child of the current subtree
-        stack.last().children.push(token)
+        stack.last().children.push(style-text(terminal, token))
       }
     }
   }
-
   assert(stack.len() == 1, message: "extra opening `[`")
-
   // Render all trees in a syntree block.
   for root in stack.last().children {
     root
