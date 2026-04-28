@@ -3,7 +3,7 @@
 #set page(width: auto, height: auto, margin: 0.5cm, fill: white)
 
 #figure(caption: "Example of a syntax tree.", gap: 2em)[
-  #syntree(nonterminal: (fill: blue), terminal: (style: "italic"))[
+  #syntree(terminal: (fill: blue), nonterminal: (style: "italic"))[
     [S
       [NP
         [Det the]
