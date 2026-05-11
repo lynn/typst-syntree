@@ -1,0 +1,50 @@
+<svg class="typst-doc" viewBox="0 0 33.681456692913386 111.48445669291338" width="33.681456692913386pt" height="111.48445669291338pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:h5="http://www.w3.org/1999/xhtml">
+    <path class="typst-shape" fill="#ffffff" fill-rule="nonzero" d="M 0 0v 111.48446 h 33.681458 v -111.48446 Z "/>
+    <g>
+        <g class="typst-group" transform="matrix(1 0 0 1 14.173228346456693 14.173228346456693)">
+            <g>
+                <g class="typst-group">
+                    <g>
+                        <g class="typst-text" transform="matrix(1 0 0 -1 0 7.238)">
+                            <use xlink:href="#g33ECB15847DF2055C7626C9EE174CAC9" x="0" y="0" fill="#000000" fill-rule="nonzero"/>
+                        </g>
+                        <g class="typst-group" transform="matrix(1 0 0 1 2.6675 32.538)">
+                            <g>
+                                <path class="typst-shape" fill="none" stroke="#000000" stroke-width="0.75" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 0 -3.3)" d="M 0 0v -18.7 "/>
+                                <g class="typst-group">
+                                    <g>
+                                        <g class="typst-group">
+                                            <g>
+                                                <g class="typst-group" transform="matrix(1 0 0 1 0 25.3)">
+                                                    <g>
+                                                        <path class="typst-shape" fill="none" stroke="#000000" stroke-width="0.75" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="4" transform="matrix(1 0 0 1 0 -3.3)" d="M 0 0v -18.7 "/>
+                                                        <g class="typst-group">
+                                                            <g>
+                                                                <g class="typst-group">
+                                                                    <g>
+                                                                        <g class="typst-group" transform="matrix(1 0 0 1 0 25.3)">
+                                                                            <g/>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+    <defs id="glyph">
+        <symbol id="g33ECB15847DF2055C7626C9EE174CAC9" overflow="visible">
+            <path d="M 0 0m 4.345 6.941 c -0.6379998 0.08799982 -0.6159997 0.29699993 -1.6939998 0.29699993 c -1.1110001 0 -2.0900002 -0.737 -2.0900002 -1.9029999 c 0 -1.1550002 0.957 -1.6830001 1.9250001 -2.0570002 c 0.65999985 -0.25299978 1.474 -0.5609999 1.474 -1.6389999 c 0 -0.8909999 -0.49500012 -1.3529999 -1.375 -1.3529999 c -1.023 0 -1.6830001 0.473 -1.9250001 1.562 c -0.14299995 0.04399991 -0.25299996 0.021999955 -0.36299998 -0.03300011 c 0.044 -0.84699994 0.088 -1.1329999 0.22000003 -1.6719999 c 0.693 0 1.0009999 -0.25300002 1.98 -0.25300002 c 0.49500012 0 0.96799994 0.121 1.3529999 0.36299998 c 0.638 0.396 1.0339999 1.0669999 1.0339999 1.7709999 c 0 1.1660001 -0.87999964 1.6830001 -1.7819998 2.024 c -0.6600001 0.2420001 -1.76 0.6600003 -1.76 1.5840001 c 0 0.6160002 0.561 1.2319999 1.21 1.2319999 c 1.0669999 0 1.408 -0.6819997 1.6279998 -1.408 c 0.12100029 -0.021999836 0.26399994 -0.01099968 0.36299992 0.065999985 c -0.043999672 0.52800035 -0.08799982 0.83599997 -0.19799995 1.4190001 Z "/>
+        </symbol>
+    </defs>
+</svg>
