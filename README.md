@@ -3,7 +3,7 @@
 **syntree** is a [Typst](https://typst.app) package for rendering syntax trees / parse trees (the kind linguists use).
 
 # Installation
-Add `#import "@preview/syntree:0.3.0: *` somewhere in the preamble. This will add both the latest version of the package, and import the `tree`, `syntree`, and `listtree` functions from the library.
+Add `#import "@preview/syntree:0.3.1: *` somewhere in the preamble. This will add both the latest version of the package, and import the `tree`, `syntree`, and `listtree` functions from the library.
 
 # Usage
 The name and default syntax are inspired by Miles Shang's [`syntree`](https://github.com/mshang/syntree). Here's an example to get started:
@@ -13,7 +13,7 @@ The name and default syntax are inspired by Miles Shang's [`syntree`](https://gi
 <td>
 
 ```typ
-#import "@preview/syntree:0.3.0": syntree
+#import "@preview/syntree:0.3.1": syntree
 
 #syntree(
   nonterminal: (style: "italic"),
@@ -41,7 +41,7 @@ There's full support for formulas inside nodes; for example, `#syntree[[DP$zws_i
 <td>
 
 ```typ
-#import "@preview/syntree:0.3.0": tree
+#import "@preview/syntree:0.3.1": tree
 
 #let bx(col) = box(fill: col, width: 1em, height: 1em)
 #tree("colors",
@@ -65,7 +65,7 @@ In addition to standard syntree bracket syntax, a list-based syntax is also prov
 <td>
 
 ```typ
-#import "@preview/syntree:0.3.0": listtree
+#import "@preview/syntree:0.3.1": listtree
 
 #figure(gap: 2em,
   caption: "Example of a syntax tree.")[
@@ -121,7 +121,7 @@ And `tree`, `syntree`, and `listtree` all can compose with each other.
 <td>
 
 ```typ
-#import "@preview/syntree:0.3.0": listtree
+#import "@preview/syntree:0.3.1": listtree
 
 #figure(gap: 2em,
   caption: "Example of a syntax tree.")[
@@ -175,7 +175,7 @@ And `tree`, `syntree`, and `listtree` all can compose with each other.
 <td>
 
 ```typst
-#import "@preview/syntree:0.3.0": listtree
+#import "@preview/syntree:0.3.1": listtree
 #import "@preview/larrow:1.1.0": label-arrow
 
 #listtree[
