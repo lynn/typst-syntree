@@ -168,3 +168,40 @@ And `tree`, `syntree`, and `listtree` all can compose with each other.
 </tr>
 </table>
 
+`syntree` aims to be a relatively minimal package and so does not provide any utilities for displaying movement or dependency relationships. However, `syntree` composes freely with external packages such as [`larrow`](https://typst.app/universe/package/larrow):
+
+<table>
+<tr>
+<td>
+
+```typst
+#import "@preview/syntree:0.3.0": listtree
+#import "@preview/larrow:1.1.0": label-arrow
+
+#listtree[
+  - TP
+    - ^NP
+      - les feuilles
+    - T'
+      - T
+        - tombaient <t-end>
+      - VP#sub[main]
+        - V'
+          - ^AdvP
+            - toujours
+          - V'
+            - #strike[V]
+              - #strike[tombaient] <t-start>
+]
+#label-arrow(<t-start>, <t-end>, bend: -100,
+  from-offset: (-5pt, -5pt), to-offset: (20pt, -15pt))
+```
+
+</td>
+<td>
+
+![Output tree for "les feuilles tombaient toujours"](examples/list/movement.svg)
+
+</td>
+</tr>
+</table>
