@@ -5,15 +5,15 @@
 #figure(caption: "Example of a syntax tree.", gap: 2em)[
   #listtree(nonterminal: (style: "italic"), terminal: (fill: blue))[
     - S
-      #syntree[
-        [NP
-          [Det the]
-          [Nom
-            [Adj little]
-            [N bear]
+      - #syntree[
+          [NP
+            [Det the]
+            [Nom
+              [Adj little]
+              [N bear]
+            ]
           ]
         ]
-      ]
       - VP
         - VP
           - V
