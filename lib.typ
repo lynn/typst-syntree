@@ -159,7 +159,7 @@ it) = {
 
       // Check for a roof ^ at the start of a line.
       let roof = false
-      if head.has("text") and head.text.starts-with("^") {
+      if head.has("text") and head.text.starts-with("^") and children.len() > 0 {
         // A head can be a single content block, in which case we must inspect it directly.
         roof = true
         head = head.text.slice(1)
