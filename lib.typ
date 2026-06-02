@@ -27,7 +27,12 @@
 
     let child-stack = stack(dir: ltr, spacing: child-spacing, ..child-nodes)
     let layer-stack = stack(dir: ttb, spacing: layer-spacing, tag-text, child-stack)
-    block(align(center, layer-stack))
+    let rendered-tree = block(align(center, layer-stack))
+    if "html" in dictionary(std) and target() == "html" {
+      html.frame(rendered-tree)
+    } else {
+      rendered-tree
+    }
   }
 }
 
