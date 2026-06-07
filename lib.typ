@@ -1,6 +1,6 @@
 #let tree(tag, ..children, child-spacing: 1em, layer-spacing: 2.3em, roof: false, stroke: 0.75pt) = {
   // If there are no children, do not draw a stack.
-  if children.len() == 0 {
+  if children.pos().len() == 0 {
     return tag
   }
   let tag-text = text(tag)
