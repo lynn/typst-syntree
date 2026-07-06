@@ -17,6 +17,7 @@
   if children.pos().len() == 0 {
     return tag
   }
+  let tag-text = text(tag)
   let hi = -layer-spacing + 0.3em
   let lo = -0.3em
   context {
@@ -50,8 +51,13 @@
     })
 
     let child-stack = stack(dir: ltr, spacing: child-spacing, ..child-nodes)
-    let layer-stack = stack(dir: ttb, spacing: layer-spacing, text(tag), child-stack)
-    block(align(center, layer-stack))
+    let layer-stack = stack(dir: ttb, spacing: layer-spacing, tag-text, child-stack)
+    let rendered-tree = block(align(center, layer-stack))
+    if "html" in dictionary(std) and target() == "html" {
+      html.frame(rendered-tree)
+    } else {
+      rendered-tree
+    }
   }
 }
 
