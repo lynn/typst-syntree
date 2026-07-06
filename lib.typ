@@ -1,40 +1,61 @@
-#let tree(tag, ..children, child-spacing: 1em, layer-spacing: 2.3em, roof: false, stroke: 0.75pt) = {
+/// Constructs a simple syntax tree from a tag and (optional) children.
+/// The tree will be rendered as compactly as possible, given the width of the children.
+#let tree(
+  /// The head of the tree (content), followed by any children of the tree (also content).
+  /// Both tags and children are content blocks, and children are possibly trees themselves.
+  tag, ..children,
+  /// Whether or not to draw the tree with a roof.
+  roof: false, 
+  /// The stroke styling for roofs / connecting branches.
+  stroke: 0.75pt,
+  /// How much horizontal space to have between nodes.
+  child-spacing: 1em, 
+  /// How much vertical space to have between nodes.
+  layer-spacing: 2.3em,
+) = {
   // If there are no children, do not draw a stack.
   if children.pos().len() == 0 {
     return tag
   }
-  let tag-text = text(tag)
+  let hi = -layer-spacing + 0.3em
+  let lo = -0.3em
   context {
-    let child-widths = children.pos().map(c => measure(c).width)
     let child-xs = ()
     let acc = 0pt
-    for width in child-widths {
+    for child in children.pos() {
       child-xs.push(acc)
-      acc += width + child-spacing
+      acc += measure(child).width + child-spacing
     }
 
     let children-width = acc - child-spacing
-
-    let child-nodes = children.pos().enumerate().map(t => {
-      let (i, child) = t
+    let child-nodes = children.pos().zip(child-xs).map(((child, child-x)) => {
       let child-width = measure(child).width
-      let x0 = child-xs.at(i) + child-width / 2
-      let hi = -layer-spacing + 0.3em
-      let lo = -0.3em
       if roof {
-        place(polygon(stroke: stroke, (0pt + child-width/2, hi), (children-width - x0 + child-width/2, lo), (-x0+ child-width/2, lo)))
+        //   A 
+        //  / \
+        // C - B
+        let a = (-child-x + children-width/2, hi)
+        let b = (-child-x + children-width, lo)
+        let c = (-child-x, lo)
+        place(polygon(stroke: stroke, a, b, c))
       } else {
-        place(line(stroke: stroke, start: (0pt+ child-width/2, lo), end: (children-width / 2 - x0+ child-width/2, hi)))
+        // A
+        // |
+        // B
+        let a = (-child-x + children-width/2, hi)
+        let b = (child-width/2, lo)
+        place(line(stroke: stroke, end: a, start: b))
       }
       child
     })
 
     let child-stack = stack(dir: ltr, spacing: child-spacing, ..child-nodes)
-    let layer-stack = stack(dir: ttb, spacing: layer-spacing, tag-text, child-stack)
+    let layer-stack = stack(dir: ttb, spacing: layer-spacing, text(tag), child-stack)
     block(align(center, layer-stack))
   }
 }
 
+/// Constructs a tree from a simple https://mshang.ca/syntree/ compatible syntax.
 #let syntree(
   /// Text styles to apply to terminal nodes of the syntax tree (nodes with no children).
   terminal: (:),
@@ -110,6 +131,7 @@ it) = {
   }
 }
 
+/// Constructs a syntax tree from a simple nested list notation.
 #let listtree(
   /// Text styles to apply to terminal nodes of the syntax tree (nodes with no children).
   terminal: (:),
@@ -163,7 +185,7 @@ it) = {
 
       // Check for a roof ^ at the start of a line.
       let roof = false
-      if head.has("text") and head.text.starts-with("^") {
+      if head.has("text") and head.text.starts-with("^") and children.len() > 0 {
         // A head can be a single content block, in which case we must inspect it directly.
         roof = true
         head = head.text.slice(1)
