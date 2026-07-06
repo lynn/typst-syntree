@@ -13,6 +13,10 @@
   /// How much vertical space to have between nodes.
   layer-spacing: 2.3em,
 ) = {
+  // If there are no children, do not draw a stack.
+  if children.pos().len() == 0 {
+    return tag
+  }
   let hi = -layer-spacing + 0.3em
   let lo = -0.3em
   context {
