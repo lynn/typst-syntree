@@ -191,16 +191,18 @@ it) = {
 
       // Check for a roof ^ at the start of a line.
       let roof = false
-      if head.has("text") and head.text.starts-with("^") and children.len() > 0 {
-        // A head can be a single content block, in which case we must inspect it directly.
-        roof = true
-        head = head.text.slice(1)
-      } else if head.has("children") and head.children.len() > 1 {
-        // A head can also be a sequence of content blocks, in which case we must inspect the first node.
-        let first = head.children.first()
-        if first.has("text") and first.text.starts-with("^") {
+      if type(head) != type(none) {
+        if head.has("text") and head.text.starts-with("^") and children.len() > 0 {
+          // A head can be a single content block, in which case we must inspect it directly.
           roof = true
-          head = first.text.slice(1) + head.children.slice(1).join()
+          head = head.text.slice(1)
+        } else if head.has("children") and head.children.len() > 1 {
+          // A head can also be a sequence of content blocks, in which case we must inspect the first node.
+          let first = head.children.first()
+          if first.has("text") and first.text.starts-with("^") {
+            roof = true
+            head = first.text.slice(1) + head.children.slice(1).join()
+          }
         }
       }
 
